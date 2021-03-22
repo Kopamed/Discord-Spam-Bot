@@ -6,6 +6,7 @@ import string
 import os
 from pyfiglet import Figlet
 from dotenv import load_dotenv
+import threading
 f = Figlet(font='slant')
 
 
@@ -63,7 +64,7 @@ def mainmenu():
         else:
             print("You must enter a number from the listed options")
 
-
+        break
 
 
 
@@ -75,17 +76,17 @@ def rand_msg():
 
 headers = {"authorization": discord_token}
 
-channel = "313271128376475649"
+channel = "823651528782643222"
 runs = 0
-effective_msgs = 0
-wasted_msgs = 0
 delay = 0.37
 
 
 mainmenu()
 
-while True:
-    try:
+def send_message():
+    while True:
+        effective_msgs = 0
+        wasted_msgs = 0
         payload = {"content": rand_msg()}
         r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
         #print(r.status_code, type(r.status_code))
@@ -94,6 +95,10 @@ while True:
         else:
             wasted_msgs += 1
 
+
+while True:
+    try:
+        send_thread_1 = threading.Thread(target=send_message, daemon=True)
         if runs == 0:
             print("Timer started")
             start_time = time.time()
