@@ -5,7 +5,13 @@ import random
 import string
 import os
 from pyfiglet import Figlet
+from dotenv import load_dotenv
 f = Figlet(font='slant')
+
+
+load_dotenv()
+discord_token =  os.getenv('discord_token')
+
 
 def confirm():
     e = input("Press [ENTER] to continue")
@@ -67,7 +73,7 @@ def rand_msg():
 #https://discord.com/api/v8/channels/814958806341255188/messages
 
 
-headers = {"authorization":"NDQ4MTczNTI4MjM2NDI1MjE2.YD3JDw.ug_Rxl8msNarBwbGrCh_5qxjFpI"}
+headers = {"authorization": discord_token}
 
 channel = "313271128376475649"
 runs = 0
