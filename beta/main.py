@@ -79,14 +79,14 @@ headers = {"authorization": discord_token}
 channel = "823651528782643222"
 runs = 0
 delay = 0.37
-
+effective_msgs = 0
+wasted_msgs = 0
 
 mainmenu()
 
 def send_message():
     while True:
-        effective_msgs = 0
-        wasted_msgs = 0
+        
         payload = {"content": rand_msg()}
         r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
         #print(r.status_code, type(r.status_code))
@@ -98,7 +98,14 @@ def send_message():
 
 while True:
     try:
-        send_thread_1 = threading.Thread(target=send_message, daemon=True)
+        payload = {"content": rand_msg()}
+        r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
+        #print(r.status_code, type(r.status_code))
+        if r.status_code == 200:
+            effective_msgs += 1
+        else:
+            wasted_msgs += 1
+        #send_thread_1 = threading.Thread(target=send_message, daemon=True)
         if runs == 0:
             print("Timer started")
             start_time = time.time()
