@@ -99,7 +99,7 @@ def send_message():
 
 while True:
     try:
-        copypasta = get_pasta(1000)
+        copypasta = get_pasta(10)
 
         for submission in copypasta:
             payload = {"content": submission}
