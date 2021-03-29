@@ -1,4 +1,5 @@
 import requests
+from copypasta import get_pasta
 import time
 import sys
 import random
@@ -76,9 +77,9 @@ def rand_msg():
 
 headers = {"authorization": discord_token}
 
-channel = "823651528782643222"
+channel = "739533170260836384"
 runs = 0
-delay = 0.37
+delay = 0.4
 effective_msgs = 0
 wasted_msgs = 0
 
@@ -98,20 +99,40 @@ def send_message():
 
 while True:
     try:
-        payload = {"content": rand_msg()}
-        r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
-        #print(r.status_code, type(r.status_code))
-        if r.status_code == 200:
-            effective_msgs += 1
-        else:
-            wasted_msgs += 1
-        #send_thread_1 = threading.Thread(target=send_message, daemon=True)
-        if runs == 0:
-            print("Timer started")
-            start_time = time.time()
+        copypasta = get_pasta(1000)
 
-        runs += 1
-        time.sleep(delay)
+        for submission in copypasta:
+            payload = {"content": submission}
+            r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
+            #print(r.status_code, type(r.status_code))
+            if r.status_code == 200:
+                effective_msgs += 1
+            else:
+                wasted_msgs += 1
+            #send_thread_1 = threading.Thread(target=send_message, daemon=True)
+            if runs == 0:
+                print("Timer started")
+                start_time = time.time()
+
+            runs += 1
+            time.sleep(delay)
+
+            for chunk in copypasta[submission]:
+                payload = {"content": chunk}
+                r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
+                #print(r.status_code, type(r.status_code))
+                if r.status_code == 200:
+                    effective_msgs += 1
+                else:
+                    wasted_msgs += 1
+                #send_thread_1 = threading.Thread(target=send_message, daemon=True)
+                if runs == 0:
+                    print("Timer started")
+                    start_time = time.time()
+
+                runs += 1
+                time.sleep(delay)
+
     except KeyboardInterrupt:
         run_time = time.time() - start_time
         print("#==========")
