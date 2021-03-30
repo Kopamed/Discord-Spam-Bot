@@ -1,0 +1,6 @@
+/*cong¡fig file must have: spamfile seperator, spam channel, latest spam options, spam type, spam delay, discord token (maybe), legit mode?, ummm display title???*/
+
+/so it will look snthing like this:
+
+/you are allowed to have multiple spam files. (not implemented in code yet tho)
+{"spamfile":{"locations":["spamfile.txt"], "separator":"+"}, "spammchannels":["739533170260836384"], "token_location":".env", "spam_type": ["copypasta"], "spamdelay":[0.4], "legitmode":false, "displaytitle":true}

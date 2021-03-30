@@ -40,7 +40,7 @@ def mainmenu():
         clear_screen()
         print(f.renderText("DiscordSpam")+"v1.0")
         print("#","="*10,"Main Menu", "="*10, "#")
-        print("My dearest retard, what do you want to do?")
+        print("Yes")
         print("1. Spam someone or some channel")
         print("2. Configure the spammer")
         print("3. Quit")
