@@ -13,10 +13,10 @@ def get_pasta(amount=10):
         messages = []
 
         if len(text) > 2000:
-            messages_needed = int(len(text)/2000)
+            messages_needed = int(len(text)/2000)+1
             for message in range(messages_needed-1):
                 messages.append(text[message*2000:(message+1)*2000])
-            messages.append(text[messages_needed:])
+            messages.append(text[messages_needed-1*2000:])
 
         else:
             messages.append(text)

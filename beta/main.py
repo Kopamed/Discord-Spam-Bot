@@ -1,4 +1,5 @@
 import requests
+from spamfile import get_spam_file
 from copypasta import get_pasta
 import time
 import sys
@@ -85,6 +86,8 @@ wasted_msgs = 0
 
 mainmenu()
 
+#idk what this is
+'''
 def send_message():
     while True:
         
@@ -95,9 +98,47 @@ def send_message():
             effective_msgs += 1
         else:
             wasted_msgs += 1
+'''
 
+#spam from file code
 
 while True:
+    try:
+        spamfile = get_spam_file()
+
+        for chunk in spamfile:
+            for subchunk in chunk:
+                payload = {"content":str(subchunk)}
+                r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
+                #print(r.status_code, type(r.status_code))
+                if r.status_code == 200:
+                    effective_msgs += 1
+                else:
+                    wasted_msgs += 1
+                #send_thread_1 = threading.Thread(target=send_message, daemon=True)
+                if runs == 0:
+                    print("Timer started")
+                    start_time = time.time()
+
+                runs += 1
+                time.sleep(delay)
+
+    except KeyboardInterrupt:
+        run_time = time.time() - start_time
+        print("#==========")
+        print("#STATISTICS")
+        print(f"#Total messages sent: {wasted_msgs + effective_msgs}")
+        print(f"#Server recieved {effective_msgs} messages")
+        print(f"#Server ignored {wasted_msgs} messages")
+        print(f"#Average msg/second: {round(effective_msgs/run_time, 2)}")
+        print(f"#Recived messages to wasted messages ratio: 1:{round(wasted_msgs/effective_msgs,2)}")
+        print(f"#Stopped after running for {round(run_time,2)} seconds")
+        sys.exit()
+
+#Copy pasta code
+'''
+while True:
+    break
     try:
         copypasta = get_pasta(10)
 
@@ -109,7 +150,7 @@ while True:
                 effective_msgs += 1
             else:
                 wasted_msgs += 1
-            #send_thread_1 = threading.Thread(target=send_message, daemon=True)
+            #send_thread_1 = threading.Thread(target=send_message, daemon=True)ferfe
             if runs == 0:
                 print("Timer started")
                 start_time = time.time()
@@ -144,3 +185,4 @@ while True:
         print(f"#Recived messages to wasted messages ratio: 1:{round(wasted_msgs/effective_msgs,2)}")
         print(f"#Stopped after running for {round(run_time,2)} seconds")
         sys.exit()
+        '''
