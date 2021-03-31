@@ -25,6 +25,48 @@ def clear_screen():
 
 
 
+def single_spam(msg):
+    runs = 0
+    delay = 0.4
+    effective_msgs = 0
+    wasted_msgs = 0
+
+
+    #spam from file code
+
+    while True:
+        try:
+
+            payload = {"content":str(msg)}
+            r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
+            #print(r.status_code, type(r.status_code))
+            if r.status_code == 200:
+                effective_msgs += 1
+            else:
+                wasted_msgs += 1
+            #send_thread_1 = threading.Thread(target=send_message, daemon=True)
+            if runs == 0:
+                print("Timer started")
+                start_time = time.time()
+
+            runs += 1
+            time.sleep(delay)
+
+        except KeyboardInterrupt:
+            run_time = time.time() - start_time
+            print("#==========")
+            print("#STATISTICS")
+            print(f"#Total messages sent: {wasted_msgs + effective_msgs}")
+            print(f"#Server recieved {effective_msgs} messages")
+            print(f"#Server ignored {wasted_msgs} messages")
+            print(f"#Average msg/second: {round(effective_msgs/run_time, 2)}")
+            print(f"#Recived messages to wasted messages ratio: 1:{round(wasted_msgs/effective_msgs,2)}")
+            print(f"#Stopped after running for {round(run_time,2)} seconds")
+            sys.exit()
+
+
+    confirm()
+
 def spam():
     runs = 0
     delay = 0.4
@@ -90,7 +132,7 @@ def mainmenu():
         user_r = input(">> ")
         if user_r == "1":
             clear_screen()
-            spam()
+            single_spam("SUSSUSAMOGUS AMSOGUS")
             
 
         elif user_r == "2":
