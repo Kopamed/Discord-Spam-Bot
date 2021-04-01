@@ -1,6 +1,6 @@
 import requests
 from spamfile import get_spam_file
-from copypasta import get_pasta
+from copypasta import *
 import time
 import sys
 import random
@@ -29,8 +29,12 @@ def spam_type():
         clear_screen()
         type_s = input("What type of spam would you like to spam?\n[1] Random bs from r/copypasta\n[2] All that from a text file\n[3] A single message\n> ")
         if type_s == "1":
-            response = pyip.inputInt('How many posts would you like to be spammed? ', min=1)
-            copypasta_spam(response)
+            remote = pyip.inputMenu(['remote', 'local'], prompt="From which source would you like to get the copy pasta from? (remote is reccomended for first runs)\n", numbered=True)         
+            if remote != "local": 
+                response = pyip.inputInt('How many posts would you like to be spammed? ', min=1)
+                copypasta_spam(remote=remote, amount = response)
+                break
+            copypasta_spam(remote="local")
             break
                         
         elif type_s == "2":
@@ -98,16 +102,20 @@ def single_spam(msg):
 
 
 
-def copypasta_spam(amount):
+def copypasta_spam(remote, amount = 10):
+    clear_screen()
     runs = 0
     delay = 0.4
     effective_msgs = 0
     wasted_msgs = 0
 
-
     #Copy pasta code
     try:
-        copypasta = get_pasta(amount)
+        
+        if remote == "local":
+            copypasta = get_pasta(amount, remote=False)
+        else:
+            copypasta = get_pasta(amount)
 
         for submission in copypasta:
             payload = {"content": submission}
