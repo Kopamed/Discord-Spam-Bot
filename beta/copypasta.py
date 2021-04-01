@@ -4,7 +4,7 @@ r = praw.Reddit('bot1')
  
 subreddit = r.subreddit("copypasta")
  	
-def get_pasta(amount=10):
+def get_pasta(amount=10, save=True):
     copypastas = {}
     submission_count = 0
     for submission in subreddit.hot(limit=amount):
