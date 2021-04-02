@@ -38,7 +38,11 @@ def spam_type():
             break
                         
         elif type_s == "2":
-            file_spam()
+            remote = pyip.inputMenu(['chronological', 'random'], prompt="In what order would you like the messages to be spammed in?\n", numbered=True)         
+            if remote == "random":
+                file_spam(rand=True, repeat=True)
+            else:
+                file_spam()
             break
 
         elif type_s == "3":
@@ -165,7 +169,7 @@ def copypasta_spam(remote, amount = 10):
 
 
 
-def file_spam(repeat=False):
+def file_spam(repeat=True, rand=False):
     runs = 0
     delay = 0.4
     effective_msgs = 0
@@ -177,8 +181,27 @@ def file_spam(repeat=False):
     while True:
         try:
             spamfile = get_spam_file()
+            
+            if not rand:
+                for chunk in spamfile:
+                    for subchunk in chunk:
+                        payload = {"content":str(subchunk)}
+                        r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
+                        #print(r.status_code, type(r.status_code))
+                        if r.status_code == 200:
+                            effective_msgs += 1
+                        else:
+                            wasted_msgs += 1
+                        #send_thread_1 = threading.Thread(target=send_message, daemon=True)
+                        if runs == 0:
+                            print("Timer started")
+                            start_time = time.time()
 
-            for chunk in spamfile:
+                        runs += 1
+                        time.sleep(delay)
+
+            else:
+                chunk = random.choice(spamfile)
                 for subchunk in chunk:
                     payload = {"content":str(subchunk)}
                     r = requests.post(f"https://discord.com/api/v8/channels/{channel}/messages", data = payload, headers = headers)
@@ -194,7 +217,11 @@ def file_spam(repeat=False):
 
                     runs += 1
                     time.sleep(delay)
-            if True != repeat:
+
+
+
+
+            if not repeat:
                 break
 
         except KeyboardInterrupt:
