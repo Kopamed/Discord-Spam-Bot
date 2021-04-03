@@ -289,7 +289,8 @@ def rand_msg():
 
 headers = {"authorization": discord_token}
 
-channel = "739533170260836384"
+with open("channel.txt", "r") as fi:
+    channel = fi.readlines()[0].strip("\n")
 mainmenu()
 
 #idk what this is
