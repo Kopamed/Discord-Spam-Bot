@@ -10,6 +10,7 @@ from pyfiglet import Figlet
 from dotenv import load_dotenv
 import threading
 import pyinputplus as pyip
+from cfg import *
 f = Figlet(font='slant')
 
 
@@ -243,8 +244,9 @@ def file_spam(repeat=True, rand=False):
 
 
 def config():
-    print("Configs")
-    confirm()
+    remote = pyip.inputMenu(['Create and configure new config file', 'Edit an existing config file', 'Overwrite an existsing config file', 'Delete an existing config file'], prompt="What would you like to do?\n", numbered=True)
+    if remote == "Create and configure new config file":
+        new_cfg()
 
 
 def mainmenu():
