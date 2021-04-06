@@ -11,6 +11,8 @@ def new_cfg():
     for fi in uhh:
         if fi == cfg_filename:
             time_to_shit_myself = 63715/0
+            
+
 
 
 
